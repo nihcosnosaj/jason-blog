@@ -56,24 +56,54 @@
             font-weight: 500;
         }
 
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin-left: var(--sidebar-width);
+            width: 100%;
+        }
+
         /* The Main Content Area */
         main {
-            margin-left: var(--sidebar-width); /* Push content past the fixed nav */
+            flex: 1;
             padding: 60px 80px;
-            max-width: 700px; /* Keeps the text from getting too wide */
+            max-width: 700px; 
+        }
+
+        .site-footer {
+            padding: 40px 80px;
+            max-width: 700px;
+            text-align: left;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .go-shoutout {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .gopher-icon {
+            width: 20px;
+            height: auto;
+            display: inline-block;
+            vertical-align: middle;
         }
 
         /* Mobile Responsive: Turn it back into a top-nav on small screens */
         @media (max-width: 768px) {
             body { flex-direction: column; }
+            .content-wrapper { margin-left: 0; } /* Reset margin on mobile */
             nav { 
                 width: 100%; 
                 height: auto; 
                 position: relative; 
-                border-right: none; 
-                border-bottom: 1px solid #eee; 
+                padding: 20px;
+                box-sizing: border-box;
             }
-            main { margin-left: 0; padding: 20px; }
+            main, .site-footer { padding: 20px; }
         }
 
         article img {
@@ -96,15 +126,30 @@
         </div>
     </nav>
 
-    <main>
-        {{ if .IsBlog }}
-            {{ template "blog_content" . }}
-        {{ else if .IsPost }}
-            {{ template "post_content" . }}
-        {{ else }}
-            {{ template "home_content" . }}
-        {{ end }}
-</main>
-</body>
+    <div class="content-wrapper">
+        <main>
+            {{ if .IsBlog }}
+                {{ template "blog_content" . }}
+            {{ else if .IsPost }}
+                {{ template "post_content" . }}
+            {{ else }}
+                {{ template "home_content" . }}
+            {{ end }}
+        </main>
+
+        <footer class="site-footer">
+            <hr>
+            <p>
+                Made with love in
+                <span class="go-shoutout">
+                    <strong>Go</strong>
+                    <img src="/assets/gopher.png" alt="Go Gopher" class="gopher-icon">
+                </span>
+            </p>
+            <p><em>Disclaimer: All views expressed on this site are my own.</em></p>
+            <p>&copy; 2026 Jason Sochin</p>
+        </footer>
+    </div>
+    </body>
 </html>
 {{ end }}
