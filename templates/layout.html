@@ -1,0 +1,110 @@
+{{ define "layout" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .Title }}</title>
+    <style>
+        :root {
+            --sidebar-width: 200px;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Charter", "Bitstream Charter", "Sitka Text", Georgia, serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background-color: #fff;
+            display: flex; /* This creates the side-by-side look */
+        }
+
+        /* The Sidebar */
+        nav {
+            width: var(--sidebar-width);
+            height: 100vh; /* Full screen height */
+            position: fixed; /* Stays put while you scroll content */
+            padding: 60px 30px;
+            display: flex;
+            flex-direction: column; /* Links go top to bottom */
+            gap: 10px;
+            border-right: 1px solid #f2f2f2;
+        }
+
+        .brand {
+            font-weight: 600;
+            font-size: 1.2em;
+            margin-bottom: 30px; /* Space below your name */
+            display: block;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .nav-links a {
+            color: #777;
+            text-decoration: none;
+            font-size: 0.95em;
+        }
+
+        .nav-links a:hover, .active {
+            color: #000 !important;
+            font-weight: 500;
+        }
+
+        /* The Main Content Area */
+        main {
+            margin-left: var(--sidebar-width); /* Push content past the fixed nav */
+            padding: 60px 80px;
+            max-width: 700px; /* Keeps the text from getting too wide */
+        }
+
+        /* Mobile Responsive: Turn it back into a top-nav on small screens */
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            nav { 
+                width: 100%; 
+                height: auto; 
+                position: relative; 
+                border-right: none; 
+                border-bottom: 1px solid #eee; 
+            }
+            main { margin-left: 0; padding: 20px; }
+        }
+
+        article img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin: 20px 0;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <span class="title">Jason Sochin</span>
+        <div class="nav-links">
+            <a href="/about" {{ if eq .Title "About" }}class="active"{{ end }}>About</a>
+            <a href="/blog" {{ if eq .Title "Blog" }}class="active"{{ end }}>Blog</a>
+            <a href="https://github.com/nihcosnosaj">GitHub</a>
+        </div>
+    </nav>
+
+    <main>
+        {{ if .IsBlog }}
+            {{ template "blog_content" . }}
+        {{ else if .IsPost }}
+            {{ template "post_content" . }}
+        {{ else }}
+            {{ template "home_content" . }}
+        {{ end }}
+</main>
+</body>
+</html>
+{{ end }}

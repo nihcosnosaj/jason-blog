@@ -1,0 +1,15 @@
+{{ define "post_content" }}
+    <article>
+        {{ if ne .Title "About" }}
+            <h1>{{ .Title }}</h1>
+            <p style="color: #888; font-family: monospace;">
+                {{ .Date.Format "January 02, 2006" }}
+            </p>
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+        {{ end }}
+        
+        <div class="post-body">
+            {{ .Content }}
+        </div>
+    </article>
+{{ end }}

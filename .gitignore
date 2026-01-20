@@ -1,0 +1,10 @@
+# Binaries
+main
+jason-blog
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Environment Variables
+.env 

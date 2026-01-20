@@ -1,0 +1,12 @@
+{{ define "blog_content" }}
+    <ul>
+    {{ range .Posts }}
+        <li>
+            <a href="/post/{{ .Slug }}">{{ .Title }}</a>
+            <span style="color: #999; font-family: monospace; font-size: 0.8em; margin-left: 10px;">
+                {{ .Date.Format "2006-01-02"}}
+            </span>
+        </li>
+    {{ end }}
+    </ul>
+{{ end }}
