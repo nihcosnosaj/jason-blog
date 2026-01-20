@@ -12,6 +12,16 @@ func main() {
 	router := gin.Default()
 	router.LoadHTMLGlob("templates/*")
 
+	// force redirect HTTP to HTTPS
+	router.Use(func(c *gin.Context) {
+		if c.Request.Header.Get("X-Forwarded-Proto") == "http" {
+			c.Redirect(http.StatusMovedPermanently, "https://"+c.Request.Host+c.Request.RequestURI)
+			c.Abort()
+			return
+		}
+		c.Next()
+	})
+
 	// Mount static assets
 	router.Static("/assets", "./assets")
 

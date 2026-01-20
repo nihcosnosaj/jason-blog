@@ -1,0 +1,12 @@
+# flyctl launch added from .gitignore
+# Binaries
+**/main
+**/jason-blog
+
+# OS metadata
+**/.DS_Store
+**/Thumbs.db
+
+# Environment Variables
+**/.env 
+fly.toml
