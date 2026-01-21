@@ -1,10 +1,10 @@
 # Blog
-My personal website repo. Built with Go, Gin, and deployed with Docker.
+My personal website repo. Built with Go, Gin, and deployed with Docker & Fly.io.
 
 ## Notes on the Stack
 - **Backend** Go 1.24 (using Gin)
 - **Content** Markdown (Goldmark + Frontmatter)
-- **Deployment** Docker
+- **Deployment** Docker & Fly.io
 
 ## Development
 For local development without rebuilding the docker image each time, run:
