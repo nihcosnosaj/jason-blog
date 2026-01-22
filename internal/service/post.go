@@ -22,6 +22,13 @@ var (
 	lastUpdate time.Time
 )
 
+// staticPages defines a map of strings and boolean values for quick, O(1) static page check.
+var staticPages = map[string]bool{
+	"about":     true,
+	"bookshelf": true,
+	"index":     true,
+}
+
 // GetPostBySlug parses a single markdown file
 func GetPostBySlug(slug string) (models.Post, error) {
 	var post models.Post
@@ -89,7 +96,7 @@ func GetAllPosts() ([]models.Post, error) {
 			fmt.Println("Attempting to index:", slug)
 
 			// Skip the About file
-			if slug == "about" || slug == "index" {
+			if staticPages[slug] {
 				continue
 			}
 

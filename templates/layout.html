@@ -122,6 +122,7 @@
         <div class="nav-links">
             <a href="/about" {{ if eq .Title "About" }}class="active"{{ end }}>About</a>
             <a href="/blog" {{ if eq .Title "Blog" }}class="active"{{ end }}>Blog</a>
+            <a href="/bookshelf" {{ if eq .Title "Bookshelf" }}class="active"{{ end }}>Bookshelf</a>
             <a href="https://github.com/nihcosnosaj">GitHub</a>
         </div>
     </nav>
@@ -130,6 +131,9 @@
         <main>
             {{ if .IsBlog }}
                 {{ template "blog_content" . }}
+            {{ else if .IsBookshelf }}
+                <h1>{{ .Title }}</h1>
+                <div>{{ .Content }}</div>
             {{ else if .IsPost }}
                 {{ template "post_content" . }}
             {{ else }}

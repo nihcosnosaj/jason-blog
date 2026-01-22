@@ -63,6 +63,20 @@ func main() {
 		})
 	})
 
+	// Bookshelf Page
+	router.GET("/bookshelf", func(c *gin.Context) {
+		post, err := service.GetPostBySlug("bookshelf")
+		if err != nil {
+			c.HTML(http.StatusNotFound, "layout", gin.H{"Title": "Not Found"})
+			return
+		}
+		c.HTML(http.StatusOK, "layout", gin.H{
+			"Title":       post.Title,
+			"Content":     post.Content,
+			"IsBookshelf": true,
+		})
+	})
+
 	// Single Post Page
 	router.GET("/post/:slug", func(c *gin.Context) {
 		slug := c.Param("slug")
