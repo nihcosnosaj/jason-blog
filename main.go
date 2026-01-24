@@ -13,14 +13,12 @@ func main() {
 	router.LoadHTMLGlob("templates/*")
 
 	// force redirect HTTP to HTTPS
-	router.Use(func(c *gin.Context) {
-		if c.Request.Header.Get("X-Forwarded-Proto") == "http" {
-			c.Redirect(http.StatusMovedPermanently, "https://"+c.Request.Host+c.Request.RequestURI)
-			c.Abort()
-			return
-		}
-		c.Next()
-	})
+	/*
+		Note: this only works if the reverse proxy sets this header.
+		If running locally or behind a proxy that doesn't set it,
+		this will break.
+	*/
+	router.Use(redirectToHTTPS())
 
 	// Mount static assets
 	router.Static("/assets", "./assets")
@@ -94,4 +92,15 @@ func main() {
 	})
 
 	router.Run(":8080")
+}
+
+func redirectToHTTPS() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if c.Request.Header.Get("X-Forwarded-Proto") == "http" {
+			c.Redirect(http.StatusMovedPermanently, "https://"+c.Request.Host+c.Request.RequestURI)
+			c.Abort()
+			return
+		}
+		c.Next()
+	}
 }
