@@ -9,6 +9,7 @@ I currently live in San Francisco and work at [Industrial Light & Magic](https:/
 
 I'm mostly focused on platform engineering, distributed systems, and systems programming at the moment, but some of my other technical interests include computer graphics, backend web development and MLOps.
 
+Outside of the technical stuff, I enjoy running, surfing, watching airplanes, learning languages, and walking around San Francisco.
 
 Email: [jsochin8@gmail.com](mailto:jsochin8@gmail.com)
 
