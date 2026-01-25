@@ -114,6 +114,24 @@
             margin: 20px 0;
             display: block;
         }
+        
+                .system-meta {
+            margin-top: 20px;
+            font-size: 0.75rem;
+            color: #888;
+        }
+
+        .system-meta code {
+            background: #f4f4f4;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .meta-val {
+            color: #444;
+            font-weight: 600;
+        }
+
     </style>
 </head>
 <body>
@@ -151,7 +169,16 @@
                 </span>
             </p>
             <p><em>Disclaimer: All views expressed on this site are my own.</em></p>
+            <div class="system-meta">
+                <code>
+                    [system_status] 
+                    region: <span class="meta-val">{{ .Region }}</span> | 
+                    latency: <span class="meta-val">{{ .ExecutionTime }}</span> | 
+                    runtime: <span class="meta-val">Go {{ .GoVersion }}</span>
+                </code>
+            </div>
             <p>&copy; 2026 Jason Sochin</p>
+
         </footer>
     </div>
     </body>
