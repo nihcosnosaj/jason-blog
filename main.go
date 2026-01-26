@@ -149,11 +149,16 @@ func Garnish() gin.HandlerFunc {
 
 		duration := time.Since(start)
 		var latency string
-		if duration.Milliseconds() > 0 {
+
+		switch {
+		case duration >= time.Millisecond:
 			latency = fmt.Sprintf("%dms", duration.Milliseconds())
-		} else {
-			latency = fmt.Sprintf("%dµs", duration.Milliseconds())
+		case duration >= time.Microsecond:
+			latency = fmt.Sprintf("%dµs", duration.Microseconds())
+		default:
+			latency = fmt.Sprintf("%dns", duration.Nanoseconds())
 		}
+
 		region := os.Getenv("FLY_REGION")
 		if region == "" {
 			region = "localhost"

@@ -33,7 +33,7 @@ On my initial implementation, I was foolishly allocating 50 new vectors each ite
         let rho = 1.0; 
 
         // Part 1: Calculate the divergence of the velocity field.
-        // This is the right-hand side (RHS) of our Poisson equation.
+        // This is the right-hand side of the Poisson equation.
         let mut divergence = vec![0.0; self.nx * self.ny];
         for j in 0..self.ny {
             for i in 0..self.nx {
@@ -46,6 +46,30 @@ On my initial implementation, I was foolishly allocating 50 new vectors each ite
                 divergence[self.p_idx(i, j)] = d;
             }
         }
+
+        // Part 2: Iteratively solve for pressure using the Jacobi method.
+        // We repeat this loop to let the pressure values settle.
+        let mut p_new = self.p.clone();
+        let num_iterations = 50; // More iterations = more accuracy
+        for _ in 0..num_iterations {
+            for j in 1..self.ny - 1 { // We only solve for interior pressure points
+                for i in 1..self.nx - 1 {
+                    let p_right = self.p[self.p_idx(i + 1, j)];
+                    let p_left  = self.p[self.p_idx(i - 1, j)];
+                    let p_top   = self.p[self.p_idx(i, j + 1)];
+                    let p_bot   = self.p[self.p_idx(i, j - 1)];
+
+                    let d = divergence[self.p_idx(i, j)];
+
+                    // This is the discretized Poisson equation rearranged for p_i,j
+                    let p_updated = (p_right + p_left + p_top + p_bot - d * dx * dx) / 4.0;
+                    p_new[self.p_idx(i, j)] = p_updated;
+                }
+            }
+            // Update the pressure field for the next iteration
+            self.p = p_new.clone();
+
+
 ```
 
 As one might imagine, this creates quite a performance bottleneck as we allocate a new `Vec` each loop. I did some digging around the web and found the idea of double buffering --> we keep two persistent buffers and swap in between them. This forum [post](https://users.rust-lang.org/t/thread-safe-double-buffer-implementation/81693) was helpful as was some asking around Gemini. 
