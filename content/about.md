@@ -7,7 +7,7 @@ slug: "about"
 
 I currently live in San Francisco and work at [Industrial Light & Magic](https://www.ilm.com/). I grew up in Northern Virginia and the Bay Area and previously studied at the University of California, Santa Cruz.
 
-I'm mostly focused on platform engineering, distributed systems, and systems programming at the moment, but some of my other technical interests include computer graphics, backend web development and MLOps.
+I'm mostly focused on platform & infrastructure engineering, distributed systems, and systems programming at the moment, but some of my other technical interests include computer graphics, backend web development and MLOps. There's probably more I could list. I find it immensely enjoyable to learn how stuff works and go down rabbit holes to pick up whatever’s needed to build what I’m excited about.
 
 Outside of the technical stuff, I enjoy running, surfing, watching airplanes, learning languages, and walking around San Francisco.
 
