@@ -23,7 +23,7 @@ const (
 func main() {
 	router := gin.Default()
 	router.Use(Garnish())
-	router.LoadHTMLGlob("templates/*")
+	router.LoadHTMLGlob(templateGlob)
 	router.Static("assets/", "./assets")
 
 	// force redirect HTTP to HTTPS
@@ -35,78 +35,75 @@ func main() {
 	router.GET("/bookshelf", bookshelfHandler)
 	router.GET("/post/:slug", postHandler)
 
-	router.Run(":" + defaultPort)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = defaultPort
+	}
+
+	srv := &http.Server{
+		Addr:         ":" + port,
+		Handler:      router,
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 10 * time.Second,
+		IdleTimeout:  120 * time.Second,
+	}
+
+	if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+		fmt.Printf("listen: %s\n", err)
+	}
 }
 
 // Handler definitions.
 
 func homeHandler(c *gin.Context) {
-	c.HTML(http.StatusOK, layoutTmpl, gin.H{
-		"IsHome":        true,
-		"ExecutionTime": c.MustGet("ExecutionTime"),
-		"Region":        c.MustGet("ServerRegion"),
-		"GoVersion":     c.MustGet("GoVersion"),
+	render(c, http.StatusOK, layoutTmpl, gin.H{
+		"IsHome": true,
 	})
 }
 
 func blogListHandler(c *gin.Context) {
 	posts, err := service.GetAllPosts()
 	if err != nil {
-		c.HTML(http.StatusInternalServerError, layoutTmpl, gin.H{
-			"Title":         "Internal Server Error",
-			"ExecutionTime": c.MustGet("ExecutionTime"),
-			"Region":        c.MustGet("ServerRegion"),
-			"GoVersion":     c.MustGet("GoVersion"),
+		render(c, http.StatusInternalServerError, layoutTmpl, gin.H{
+			"Title": "Internal Server Error",
 		})
 		return
 	}
 
-	fmt.Printf("Found %d posts\n", len(posts))
-
-	c.HTML(http.StatusOK, layoutTmpl, gin.H{
-		"Title":         "Blog",
-		"Posts":         posts,
-		"ExecutionTime": c.MustGet("ExecutionTime"),
-		"Region":        c.MustGet("ServerRegion"),
-		"GoVersion":     c.MustGet("GoVersion"),
-		"IsBlog":        true,
+	render(c, http.StatusOK, layoutTmpl, gin.H{
+		"Title":  "Blog",
+		"Posts":  posts,
+		"IsBlog": true,
 	})
-
 }
 
 func aboutHandler(c *gin.Context) {
 	post, err := service.GetPostBySlug(aboutSlug)
 	if err != nil {
-		c.HTML(http.StatusNotFound, layoutTmpl, gin.H{
+		render(c, http.StatusNotFound, layoutTmpl, gin.H{
 			"Title": "Not Found",
 		})
 		return
 	}
-	c.HTML(http.StatusOK, layoutTmpl, gin.H{
-		"Title":         post.Title,
-		"Content":       post.Content,
-		"ExecutionTime": c.MustGet("ExecutionTime"),
-		"Region":        c.MustGet("ServerRegion"),
-		"GoVersion":     c.MustGet("GoVersion"),
-		"IsPost":        true,
+	render(c, http.StatusOK, layoutTmpl, gin.H{
+		"Title":   post.Title,
+		"Content": post.Content,
+		"IsPost":  true,
 	})
 }
 
 func bookshelfHandler(c *gin.Context) {
 	post, err := service.GetPostBySlug(bookshelfSlug)
 	if err != nil {
-		c.HTML(http.StatusNotFound, layoutTmpl, gin.H{
+		render(c, http.StatusNotFound, layoutTmpl, gin.H{
 			"Title": "Not Found",
 		})
 		return
 	}
-	c.HTML(http.StatusOK, layoutTmpl, gin.H{
-		"Title":         post.Title,
-		"Content":       post.Content,
-		"ExecutionTime": c.MustGet("ExecutionTime"),
-		"Region":        c.MustGet("ServerRegion"),
-		"GoVersion":     c.MustGet("GoVersion"),
-		"IsBookshelf":   true,
+	render(c, http.StatusOK, layoutTmpl, gin.H{
+		"Title":       post.Title,
+		"Content":     post.Content,
+		"IsBookshelf": true,
 	})
 }
 
@@ -114,19 +111,16 @@ func postHandler(c *gin.Context) {
 	slug := c.Param("slug")
 	post, err := service.GetPostBySlug(slug)
 	if err != nil {
-		c.HTML(http.StatusNotFound, layoutTmpl, gin.H{
+		render(c, http.StatusNotFound, layoutTmpl, gin.H{
 			"Title": "Not Found",
 		})
 		return
 	}
-	c.HTML(http.StatusOK, layoutTmpl, gin.H{
-		"Title":         post.Title,
-		"Date":          post.Date,
-		"Content":       post.Content,
-		"ExecutionTime": c.MustGet("ExecutionTime"),
-		"Region":        c.MustGet("ServerRegion"),
-		"GoVersion":     c.MustGet("GoVersion"),
-		"IsPost":        true,
+	render(c, http.StatusOK, layoutTmpl, gin.H{
+		"Title":   post.Title,
+		"Date":    post.Date,
+		"Content": post.Content,
+		"IsPost":  true,
 	})
 }
 
@@ -143,10 +137,20 @@ func redirectToHTTPS() gin.HandlerFunc {
 	}
 }
 
+// Garnish gathers system stats for an informative footer on each page.
+// Currently calculates: latency (in ns, µs, and ms), fly.io region,
+// and the Go runtime version we are using.
 func Garnish() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		start := time.Now()
+		c.Set("RequestStart", time.Now())
+		c.Next()
+	}
+}
 
+// render is a helper to inject Garnish data and render the template
+func render(c *gin.Context, status int, templateName string, data gin.H) {
+	if startVal, ok := c.Get("RequestStart"); ok {
+		start := startVal.(time.Time)
 		duration := time.Since(start)
 		var latency string
 
@@ -158,17 +162,15 @@ func Garnish() gin.HandlerFunc {
 		default:
 			latency = fmt.Sprintf("%dns", duration.Nanoseconds())
 		}
-
-		region := os.Getenv("FLY_REGION")
-		if region == "" {
-			region = "localhost"
-		}
-
-		c.Set("ExecutionTime", latency)
-		c.Set("ServerRegion", region)
-		version := strings.TrimPrefix(runtime.Version(), "go")
-		c.Set("GoVersion", version)
-
-		c.Next()
+		data["ExecutionTime"] = latency
 	}
+
+	region := os.Getenv("FLY_REGION")
+	if region == "" {
+		region = "localhost"
+	}
+	data["Region"] = region
+	data["GoVersion"] = strings.TrimPrefix(runtime.Version(), "go")
+
+	c.HTML(status, templateName, data)
 }

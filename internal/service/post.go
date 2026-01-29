@@ -39,7 +39,7 @@ func GetPostBySlug(slug string) (models.Post, error) {
 	// Read the file
 	file, err := os.Open(path)
 	if err != nil {
-		return post, fmt.Errorf("count not open file: %v", err)
+		return post, fmt.Errorf("could not open file: %v", err)
 	}
 	defer file.Close()
 
@@ -75,6 +75,11 @@ func GetAllPosts() ([]models.Post, error) {
 	cacheMutex.Lock()
 	defer cacheMutex.Unlock()
 
+	// Double-check: ensure cache wasn't updated while we waited for the lock
+	if time.Since(lastUpdate) < 5*time.Minute && cache != nil {
+		return cache, nil
+	}
+
 	var posts []models.Post
 
 	// Read the directory
@@ -93,7 +98,6 @@ func GetAllPosts() ([]models.Post, error) {
 		if filepath.Ext(file.Name()) == ".md" {
 			// Strip extension to get slug
 			slug := strings.TrimSuffix(file.Name(), ".md")
-			fmt.Println("Attempting to index:", slug)
 
 			// Skip the About file
 			if staticPages[slug] {
@@ -103,11 +107,9 @@ func GetAllPosts() ([]models.Post, error) {
 			// Extract only metadata
 			post, err := GetPostBySlug(slug)
 			if err != nil {
-				fmt.Printf("Error loading %s: %v\n", slug, err) // Debug
-				continue                                        // Skip broken files
+				continue // Skip broken files
 			}
 			posts = append(posts, post)
-			fmt.Printf("Posts: %s", posts)
 		}
 	}
 
@@ -119,6 +121,5 @@ func GetAllPosts() ([]models.Post, error) {
 	cache = posts
 	lastUpdate = time.Now()
 
-	fmt.Printf("Cache: %s", cache)
 	return cache, nil
 }
