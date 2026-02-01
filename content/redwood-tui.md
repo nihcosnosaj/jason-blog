@@ -10,10 +10,10 @@ And so **Redwood** was born: a high-performance, minimalist TUI (text/terminal u
 
 I looked at `bubbletea` in Go, but as I've been loving doing work in Rust recently, I chose the ruthless memory safety and concurrency primitives of Rust's `ratatui` ecosystem. 
 
-And yes, the name `redwood` is a nod to the callsign for Virgin America. Sorely missed from the skies of the U.S., but not forgotten by those of us who appreciate a better design and experience in the skies. 
+And yes, the name `redwood` is a nod to the callsign for Virgin America. Sorely missed from the skies of the U.S., but not forgotten. Devoured by Alaska Airlines. 
 
 ### Architecture
-In `ratatui`, unlike Elm-inspired libraries like Go's `bubbletea`, state management is ... unopionionated. The orchestration of threads and managing state is completely up to you, the engineer. Aiming for 60 FPS while making API calls async in the background and querying a local SQLite db, this is the architecture I ironed out:
+In `ratatui`, unlike Elm-inspired libraries like Go's `bubbletea`, state management is ... unopionionated. The orchestration of threads and managing state is completely up to you. Aiming for 60 FPS while making API calls async in the background and querying a local SQLite db, this is the architecture I ironed out:
 1. a main loop -- a central loop that handles drawing the UI and dealing with user input. 
 2. the async poller -- a background `tokio` task managing the OpenSky API lifecyle.
 3. the blocking worker -- a dedicated pool for CPU-bound database enrichment.
