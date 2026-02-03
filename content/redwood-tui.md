@@ -19,7 +19,7 @@ In `ratatui`, unlike Elm-inspired libraries like Go's `bubbletea`, state managem
 3. the blocking worker -- a dedicated pool for CPU-bound database enrichment.
 
 ### Scaling Metadata
-OpenSky provides a nifty (and free) endpoint at `/states/all` that provides raw telemetry and barebones data based on a geographical (latitute and longitutde) area you define in the request. The response is quite light, but gives a meaningful starting point with the following metadata:
+OpenSky provides a nifty (and free) endpoint at `/states/all` that provides raw telemetry and barebones data based on a geographical (latitude and longitude) area you define in the request. The response is quite light, but gives a meaningful starting point with the following metadata:
 - `icao24` -- a unique ICAO 24-bit address of the transponder in hex string representation
 - `callsign`, `origin_country`, `timestamp`, `velocity`, `vertical_rate`, `true_track` (heading in degrees)
 

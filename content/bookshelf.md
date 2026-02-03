@@ -9,5 +9,5 @@ This list isn't meant to be purely novels, but really anything from whitepapers 
 
 ### On My Bookshelf
 
-
+- [The Unix Hater's Handbook](https://web.mit.edu/~simsong/www/ugh.pdf) -- This was a very funny read for a solely UNIX user, even though a bit dated (from the 90s). One particularly funny quote is: "Two of the most famous products of Berkeley are LSD and Unix. I don’t think that is a coincidence"
 
