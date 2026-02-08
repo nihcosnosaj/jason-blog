@@ -165,6 +165,11 @@ func render(c *gin.Context, status int, templateName string, data gin.H) {
 		data["ExecutionTime"] = latency
 	}
 
+	var m runtime.MemStats
+	runtime.ReadMemStats(&m)
+
+	data["MemoryUsage"] = fmt.Sprintf("%.2f MB", float64(m.HeapAlloc)/1024/1024)
+
 	region := os.Getenv("FLY_REGION")
 	if region == "" {
 		region = "localhost"

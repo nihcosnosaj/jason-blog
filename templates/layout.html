@@ -174,7 +174,8 @@
                     [some_system_stats] 
                     region: <span class="meta-val">{{ .Region }}</span> | 
                     latency: <span class="meta-val">{{ .ExecutionTime }}</span> | 
-                    runtime: <span class="meta-val">Go {{ .GoVersion }}</span>
+                    runtime: <span class="meta-val">Go {{ .GoVersion }}</span> |
+                    heap: <span class="meta-val">{{ .MemoryUsage }} </span>
                 </code>
             </div>
             <p>&copy; 2026 Jason Sochin</p>
