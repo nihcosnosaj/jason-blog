@@ -14,6 +14,7 @@ import (
 	"github.com/adrg/frontmatter"
 	"github.com/nihcosnosaj/jason-blog/internal/models"
 	"github.com/yuin/goldmark"
+	"github.com/yuin/goldmark/renderer/html"
 )
 
 var (
@@ -49,9 +50,15 @@ func GetPostBySlug(slug string) (models.Post, error) {
 		return post, fmt.Errorf("error parsing frontmatter: %v", err)
 	}
 
+	md := goldmark.New(
+		goldmark.WithRendererOptions(
+			html.WithUnsafe(),
+		),
+	)
+
 	// Convert Markdown body to HTML
 	var buf bytes.Buffer
-	if err := goldmark.Convert(rest, &buf); err != nil {
+	if err := md.Convert(rest, &buf); err != nil {
 		return post, fmt.Errorf("error converting markdown: %v", err)
 	}
 

@@ -4,14 +4,11 @@ date: 2026-02-07
 slug: "towards-chaos-thomas-attractor"
 ---
 
-<p align="center">
-    <img src="./assets/thomas-attractor.gif" width="600px"/>
-</p>
-
+<img src="/assets/thomas-attractor.gif" alt="chaos-demo.gif" style="width:100% !important; height: auto;">
 
 All things eventually trend toward chaos and decay. Which is funny because we humans spend our lives trying to build and preserve institutions of order. Spreadsheets, calendars, daily to-do lists, enrolling in a school program, etc. 
 
-Chaos doesn't mean order isn't present, though. It means there was a very sensitive dependence on initial conditions. There is a particularly interesting branch of mathematics, Chaos Theory, that I spent some time reading about and wanted to explore visually.[Read.](https://en.wikipedia.org/wiki/Chaos_theory) Some more reading later and I stumbled upon the Thomas Cyclically Symmetrical Attractor, a quite poetic map of how a dynamic system can descend into chaos. 
+Chaos doesn't mean order isn't present, though. It means there was a very sensitive dependence on initial conditions. There is a particularly interesting branch of mathematics, Chaos Theory, that I spent some time reading about and wanted to explore visually. [Read.](https://en.wikipedia.org/wiki/Chaos_theory) Some more reading later and I stumbled upon the Thomas Cyclically Symmetrical Attractor, a quite poetic map of how a dynamic system can descend into chaos. 
 
 Most systems want to settle to rest. Pendulums stop, a cup of coffee levels off to room temperature, a ball kicked by a person will roll for a bit but eventually come back to rest. Chaotic systems, on the other hand, are inherently attracted to a state of perpetual, non-repeating motion. 
 
@@ -19,8 +16,8 @@ The Thomas Attractor traces a path through 3D space governed by a set of three c
 
 $$
 \begin{aligned}
-\frac{dx}{dt} &= \sin(y) - bx \\
-\frac{dy}{dt} &= \sin(z) - by \\
+\frac{dx}{dt} &= \sin(y) - bx \\\\
+\frac{dy}{dt} &= \sin(z) - by \\\\
 \frac{dz}{dt} &= \sin(x) - bz
 \end{aligned}
 $$

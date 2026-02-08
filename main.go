@@ -24,7 +24,7 @@ func main() {
 	router := gin.Default()
 	router.Use(Garnish())
 	router.LoadHTMLGlob(templateGlob)
-	router.Static("assets/", "./assets")
+	router.Static("/assets", "./assets")
 
 	// force redirect HTTP to HTTPS
 	router.Use(redirectToHTTPS())
