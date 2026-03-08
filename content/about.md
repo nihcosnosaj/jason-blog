@@ -9,16 +9,25 @@ Hello! I'm Jason.
 
 I currently live in San Francisco and work at [Industrial Light & Magic](https://www.ilm.com/). I grew up in Northern Virginia and the Bay Area and previously studied at the University of California, Santa Cruz.
 
-I'm a systems-focused engineer who really enjoys understanding and building the foundations that make this complex software/AI/ML ecosystem possible. 
+I'm a systems-focused engineer who really enjoys understanding and building, well, complex systems. 
 
-Currently, I'm mostly focused on platform & infrastructure engineering, distributed systems, and low-level systems programming, but some of my other technical interests include computer graphics, full-stack web development and MLOps. There's probably more I could list. I find it immensely enjoyable to learn how stuff works and go down rabbit holes to pick up whatever’s needed to build what I’m excited about, so this list grows quite frequently.
+Currently, I'm focusing on platform and infrastructure engineering (both in the cloud and on-prem/bare-metal). I've been programming in Python, Rust, and Go mostly and really enjoy the low-level systems stuff. I use linux professionally and for my home-lab, but love my macbook too. 
+
+I really enjoy learning all the nitty-gritty details about whatever I'm working with. I often find myself going down rabbit holes. 
+
+Some other areas that I enjoy and have explored previously include:
+- computer graphics
+- web development across the stack
+- MLOps
 
 Outside of the technical stuff, I enjoy:
 - running along the Embarcadero or at Golden Gate Park
 - surfing at Ocean Beach 
-- watching airplanes at SFO
-- speaking Italian
+- planespotting at SFO
+- speaking Italian 
 - walking around San Francisco
+
+Oh also, I have a few movie [credits](https://www.imdb.com/name/nm14996501/).
 
 Email: [jsochin8@gmail.com](mailto:jsochin8@gmail.com)
 
